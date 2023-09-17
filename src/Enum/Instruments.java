@@ -1,4 +1,4 @@
-package Enum;
+package web.jelton.musicgen.generator.Enum;
 
 /*
  * Each letter represents a tracktype value

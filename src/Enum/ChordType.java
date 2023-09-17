@@ -1,4 +1,4 @@
-package Enum;
+package web.jelton.musicgen.generator.Enum;
 
 public enum ChordType {
     triad,

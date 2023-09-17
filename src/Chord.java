@@ -1,6 +1,9 @@
-import Enum.ChordType;
-import Enum.Note;
+package web.jelton.musicgen.generator;
+
 import java.util.Arrays;
+
+import web.jelton.musicgen.generator.Enum.ChordType;
+import web.jelton.musicgen.generator.Enum.Note;
 
 
 public class Chord {

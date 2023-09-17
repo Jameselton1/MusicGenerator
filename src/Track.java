@@ -1,4 +1,6 @@
- import Enum.TrackType;
+package web.jelton.musicgen.generator;
+
+import web.jelton.musicgen.generator.Enum.TrackType;
 
 /*
  * A track represents an instrument

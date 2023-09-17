@@ -1,4 +1,6 @@
-import Enum.Note;
+package web.jelton.musicgen.generator;
+
+import web.jelton.musicgen.generator.Enum.Note;
 
 /*
  * Most fundamental measurement of time in music

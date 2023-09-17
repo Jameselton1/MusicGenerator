@@ -1,17 +1,20 @@
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiEvent;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.ShortMessage;
-import Enum.Note;
-import Enum.TrackType;
+package web.jelton.musicgen.generator;
 
 import java.util.Random;
+
+import javax.sound.midi.*;
+
+import web.jelton.musicgen.generator.Enum.Note;
+import web.jelton.musicgen.generator.Enum.TrackType;
 
 public class MidiGenerator {
     private Sequence midiFile;
     private int ticksInBar = 768;
     private int quarter = ticksInBar / 4;
 
+    /*
+     * Take the data from a song object and convert it to a midi sequencee
+     */
     public Sequence generateMIDI(Song song) throws InvalidMidiDataException {
         Sequence sequence = new Sequence(0.0F, quarter);
         int time = 0;

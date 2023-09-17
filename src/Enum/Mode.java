@@ -1,4 +1,4 @@
-package Enum;
+package web.jelton.musicgen.generator.Enum;
 
 /*
 * Modes are the blueprint for constructing the scale.

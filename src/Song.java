@@ -1,4 +1,4 @@
-
+package web.jelton.musicgen.generator;
 /*
  * songs are made up of a class hierarchy:
  *      - Tracks

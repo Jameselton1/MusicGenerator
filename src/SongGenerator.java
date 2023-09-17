@@ -1,5 +1,13 @@
-import Enum.*;
+package web.jelton.musicgen.generator;
+
 import java.util.Random;
+
+import web.jelton.musicgen.generator.Enum.Mode;
+import web.jelton.musicgen.generator.Enum.Note;
+import web.jelton.musicgen.generator.Enum.ChordType;
+import web.jelton.musicgen.generator.Enum.Instruments;
+import web.jelton.musicgen.generator.Enum.Structure;
+import web.jelton.musicgen.generator.Enum.TrackType;
 
 public class SongGenerator {
     Random random = new Random();
@@ -13,31 +21,37 @@ public class SongGenerator {
         this.song = createSong();
     }
 
-    // generate and return a song object
+    /*
+     *  Create and return a song object, with generated contents
+     */ 
     private Song createSong() {
         Song song = new Song();
-        createProperties();
+        createSongProperties();
 
         // random structure value into a char array
-        char[] structure = Structure.values()[random.nextInt(Structure.values().length)].toString().toCharArray();
+        int structureIndex = random.nextInt(Structure.values().length);
+        char[] structure = Structure.values()[structureIndex].toString().toCharArray();
+
         // random instruments value into a char array
-        char[] instruments = Instruments.values()[random.nextInt(Instruments.values().length)].toString().toCharArray();
-                 
+        int instrumentIndex = random.nextInt(Instruments.values().length);
+        char[] instruments = Instruments.values()[instrumentIndex].toString().toCharArray();
+
         song.setTracks(createTracks(structure, instruments));
 
         return song;
     }
 
-    // randomly select the root note and mode, and then generate the scale
-    private void createProperties(){
+    /*
+     *  Randomly select the root note and mode, and then generate the scale
+     */
+    private void createSongProperties(){
         int root = random.nextInt(Note.values().length);
         this.mode = Mode.values()[random.nextInt(Mode.values().length)];
         this.scale = createScale(root, mode);
     }
 
     /*
-     * create a track for each letter in instruments, assign it an appropriate
-     * tracktype value, then generate the music
+     * Create a track for each instrument, assign it an appropriate tracktype, generate the music
      */
     private Track[] createTracks(char[] structure, char[] instruments){
 
@@ -46,8 +60,7 @@ public class SongGenerator {
         // for each track type from the randomly selected instruments enumerator value
         for (int i = 0; i < tracks.length; i++)
             // create a new track with the corresponding TrackType value
-            tracks[i] = new Track(getType(instruments[i]), structure.length);
-
+            tracks[i] = new Track(getTrackType(instruments[i]), structure.length);
 
         // for each segment in the song structure
         for (int i = 0; i < structure.length; i++) {
@@ -61,8 +74,7 @@ public class SongGenerator {
         return tracks;
     }
 
-    // return a TrackType value based on the instrument character value
-    private TrackType getType(char instrument){
+    private TrackType getTrackType(char instrument){
         return switch (instrument){
             case 'M' -> TrackType.Melody;
             case 'C' -> TrackType.Chord;
@@ -71,18 +83,22 @@ public class SongGenerator {
         };
     }
 
-    /* Returns a 2d array of 'root notes' which represent which notes within the scale (0-6) are
-    * the root notes of the chords in each corresponding position.
-    * The first dimension represents the set of bars it's for and the second dimension represents
-    * the number of beats in each bar.
-    * This is done to provide the same root notes for the melody, chord progression and bass line so they can
-    * share the same starting note
-    * */
+    /*
+     *  Returns a 2d array of 'root notes' which represent the notes within the scale (0-6) which are
+     *  the root notes of the chords in each corresponding position.
+     *  
+     *  The first dimension represents the set of bars it's for and the second dimension represents
+     *  the number of beats in each bar.
+     *  
+     *  This is done to provide the same root notes for the melody, chord progression and bass line so they can
+     *  share the same starting note
+     * */
     private int[][] generateRootNotes(int setsOfBars, int beatsInBars){
         int[][] rootNotes = new int[setsOfBars][beatsInBars];
 
-        /* retrieve a random note from the scale for each beat in each bar
-         * to act as the root note for the chord
+        /*
+         *  Retrieve a random note from the scale for each beat in each bar
+         *  to act as the root note for the chord
          */
         for (int i = 0; i < setsOfBars; i++)
             for (int j = 0; j < beatsInBars; j++)
@@ -92,8 +108,8 @@ public class SongGenerator {
     }
 
     /*
-     * create and return a segment which contains notes
-     * notes are generated based on track type
+     *  Create and return a segment which contains notes.
+     *  Notes are generated based on the track type.
      */
     private Segment createSegment(int[][] rootNotes, TrackType type){
         Bar[] bars = new Bar[rootNotes.length];
@@ -102,13 +118,16 @@ public class SongGenerator {
         return new Segment(bars);
     }
 
-    // create a bars array containing the notes to be converted to midi
+    /*
+     *  Create a bars array containing the notes to be converted to midi
+     */
     private Bar createBar(int[] rootNotes, TrackType type){
         Beat[] beats = new Beat[rootNotes.length];
 
-        /* Dimension 1 represents the number of subdivisions
+        /* 
+         * Dimension 1 represents the number of subdivisions
          * Dimension 2 represents how many notes are played simultaneously
-        */
+         */
         Note[][] notes = null;
 
         for (int i = 0; i < beats.length; i++) {
@@ -140,30 +159,27 @@ public class SongGenerator {
     }
 
 
-    /* generate and return a musical scale based on
-     * the key (root note) and the mode (i.e. major, minor),
-     * so if the key is B, and the mode is minor, the
-     * scale returned is B minor
+    /*
+     *  Generate and return a musical scale based on the key (root note) and the mode (i.e. major, minor),
+     *  so if the key is B, and the mode is minor, the notes to be returned will correspond to the B minor scale.
      */
     private Note[] createScale(int root, Mode mode){
-        int[] formula = modeFormula(mode);
-        Note[] scale = new Note[formula.length];
+        int[] template = scaleTemplate(mode);
+        Note[] scale = new Note[template.length];
 
-
-        // iterate over the formula array
-        for (int i = 0; i < formula.length; i++) {
-            // calculate the index of the next note in the scale
-            int index = (root + formula[i]) % 12;
-            // assign the note value to the corresponding element in the scale array
+        // For each note in the scale, use the template to retrieve the value of the note
+        for (int i = 0; i < template.length; i++) {
+            int index = (root + template[i]) % 12;
             scale[i] = Note.values()[index];
         }
-
-
         return scale;
     }
 
-    // values represent intervals from scales' root note
-    private int[] modeFormula(Mode mode){
+    /* 
+     * Each integer value represents the number of 
+     * intervals from the root note of the scale
+     */
+    private int[] scaleTemplate(Mode mode){
         return switch (mode){
             case major -> new int[]{0, 2, 4, 5, 7, 9, 11};
             case minor -> new int[]{0, 2, 3, 5, 7, 8, 10};

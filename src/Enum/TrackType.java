@@ -1,4 +1,4 @@
-package Enum;
+package web.jelton.musicgen.generator.Enum;
 
 /*
  * Represents the role in the song which the track plays
