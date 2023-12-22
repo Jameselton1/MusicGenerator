@@ -23,11 +23,8 @@ public class Chord {
         int[] chordFormula = chordFormula(type);
         Note[] notes = new Note[chordFormula.length];
 
-        // iterate over the length of the chord formula
         for (int i = 0; i < chordFormula.length; i++) {
-            // calculate the index of the next note in the chord
             int index = (root + chordFormula[i]) % scale.length;
-            // assign the note value to the corresponding element in the notes array
             notes[i] = scale[index];
         }
         return notes;

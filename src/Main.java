@@ -1,3 +1,5 @@
+package web.jelton.musicgen.generator;
+
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class Main {
     private static Sequence createMidiSong() throws InvalidMidiDataException {
         SongGenerator generator = new SongGenerator();
         MidiGenerator midiGenerator = new MidiGenerator();
-        Song song = generator.getSong();
+        Song song = generator.newSong();
 
         System.out.println(generator.getScale()[0]);
         System.out.println(generator.getMode());

@@ -1,37 +1,36 @@
 package web.jelton.musicgen.generator;
 
-import web.jelton.musicgen.generator.Enum.TrackType;
+import java.util.List;
 
 /*
  * A track represents an instrument
  */
 public class Track {
     // contents of the track
-    Segment[] segments;
+    List<Segment> segments;
     // indicates the role of the track in the song e.g. chords
-    TrackType type;
+    char type;
 
-    public Track(TrackType t, int length) {
+    public Track(char t) {
         this.type = t;
-        this.segments = new Segment[length];
     }
 
-    public void setSegment(int index, Segment segment){
-        this.segments[index] = segment;
+    public void addSegment(Segment segment){
+        this.segments.add(segment);
     }
-    public TrackType getType() {
+    public char getType() {
         return type;
     }
 
-    public void setType(TrackType type) {
+    public void setType(char type) {
         this.type = type;
     }
 
-    public Segment[] getSegments() {
+    public List<Segment> getSegments() {
         return segments;
     }
 
-    public void setSegments(Segment[] segments) {
+    public void setSegments(List<Segment> segments) {
         this.segments = segments;
     }
 }
