@@ -15,11 +15,12 @@ public class SongGenerator {
     public Song newSong() {
         Song song = new Song();
         createSongProperties();
-        song.setTracks(createTracks(songStructure, instrumentStructure));
+        Track[] tracks = createTracks(songStructure, instrumentStructure);
+        song.setTracks(tracks);
         return song;
     }
 
-    private void createSongProperties(){
+    private void createSongProperties() {
         int root = random.nextInt(Note.values().length);
         this.mode = Mode.values()[random.nextInt(Mode.values().length)];
         this.scale = createScale(root, mode);
@@ -27,20 +28,21 @@ public class SongGenerator {
         this.instrumentStructure = randomInstrumentStructure();
     }
 
-    private char[] randomSongStructure(){
+    private char[] randomSongStructure() {
         int index = random.nextInt(SongStructure.values().length);
         return SongStructure.values()[index].toString().toCharArray();
     }
-    private char[] randomInstrumentStructure(){
+    private char[] randomInstrumentStructure() {
         int index = random.nextInt(InstrumentStructure.values().length);
         return InstrumentStructure.values()[index].toString().toCharArray();
     }
 
-    private Track[] createTracks(char[] songStructure, char[] instrumentStructure){
+    private Track[] createTracks(char[] songStructure, char[] instrumentStructure) {
         Track[] tracks = new Track[instrumentStructure.length];
 
-        for (int i = 0; i < tracks.length; i++)
+        for (int i = 0; i < tracks.length; i++) {
             tracks[i] = new Track(instrumentStructure[i]);
+        }
 
         for (int i = 0; i < songStructure.length; i++) {
             int[][] rootNotes = generateRootNotes(3, 4);
@@ -48,41 +50,39 @@ public class SongGenerator {
                 Segment segment = createSegment(rootNotes, tracks[j].getType());
                 tracks[j].addSegment(segment);
             }
-
         }
-
         return tracks;
     }
-
 
     private int[][] generateRootNotes(int setsOfBars, int beatsInBars){
         int[][] rootNotes = new int[setsOfBars][beatsInBars];
 
-        for (int i = 0; i < setsOfBars; i++)
-            for (int j = 0; j < beatsInBars; j++)
+        for (int i = 0; i < setsOfBars; i++) {
+            for (int j = 0; j < beatsInBars; j++) {
                 rootNotes[i][j] = random.nextInt(7);
-
+            }
+        }
         return rootNotes;
     }
 
     private Segment createSegment(int[][] rootNotes, char type){
         Bar[] bars = new Bar[rootNotes.length];
-        for (int i = 0; i < rootNotes.length; i++)
+        for (int i = 0; i < rootNotes.length; i++) {
             bars[i] = createBar(rootNotes[i], type);
+        }
         return new Segment(bars);
     }
 
     private Bar createBar(int[] rootNotes, char type){
         Beat[] beats = new Beat[rootNotes.length];
-
         Note[][] notes = null;
-
         for (int i = 0; i < beats.length; i++) {
             switch (type) {
                 case 'M' -> {
                     notes = new Note[random.nextInt(3) + random.nextInt(2) + 1][1];
-                    for (int j = 0; j < notes.length; j++)
+                    for (int j = 0; j < notes.length; j++) {
                         notes[j][0] = scale[random.nextInt(scale.length)];
+                    }
                 }
                 case 'C' -> {
                     notes = new Note[1][3];
@@ -90,17 +90,16 @@ public class SongGenerator {
                 }
                 case 'B' -> {
                     notes = new Note[random.nextInt(2) + 1][1];
-                    for (int j = 0; j < notes.length; j++)
+                    for (int j = 0; j < notes.length; j++) {
                         notes[j][0] = (j == 0) ? scale[rootNotes[i]] : scale[random.nextInt(scale.length)];
+                    }
                 }
             }
             beats[i] = new Beat(notes);
         }
-
-
         return new Bar(beats);
     }
-
+    // Return an array of musical notes, based on a scale template (mode) and a root note
     private Note[] createScale(int root, Mode mode){
         int[] template = scaleTemplate(mode);
         Note[] scale = new Note[template.length];
@@ -111,7 +110,7 @@ public class SongGenerator {
         }
         return scale;
     }
-
+    // Values represent the number of notes from the scale root note for each position of the scale
     private int[] scaleTemplate(Mode mode){
         return switch (mode){
             case major -> new int[]{0, 2, 4, 5, 7, 9, 11};

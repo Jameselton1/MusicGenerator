@@ -1,5 +1,6 @@
 package web.jelton.musicgen.generator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public class Track {
     // contents of the track
-    List<Segment> segments;
+    List<Segment> segments = new ArrayList<Segment>();
     // indicates the role of the track in the song e.g. chords
     char type;
 

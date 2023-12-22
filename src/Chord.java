@@ -12,14 +12,13 @@ public class Chord {
     // all of the notes of the chord including the root note
     private Note[] notes;
 
-    public Chord(int root, ChordType type, Note[] scale){
+    public Chord(int root, ChordType type, Note[] scale) {
         this.root = scale[root];
         this.notes = generateNotes(root, type, scale);
     }
 
     // retrieve the notes for the chord using the formula and root note like in a scale
     private Note[] generateNotes(int root, ChordType type, Note[] scale) {
-
         int[] chordFormula = chordFormula(type);
         Note[] notes = new Note[chordFormula.length];
 
@@ -31,7 +30,7 @@ public class Chord {
     }
 
     // values represent intervals from chord's root note
-    private int[] chordFormula(ChordType type){
+    private int[] chordFormula(ChordType type) {
         return switch (type) {
             case triad -> new int[]{0, 2, 4};
             case seventh -> new int[]{0, 2, 4, 6};
