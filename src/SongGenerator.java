@@ -1,7 +1,5 @@
 package web.jelton.musicgen.generator;
-
 import java.util.Random;
-
 import web.jelton.musicgen.generator.Enum.*;
 
 public class SongGenerator {
@@ -10,13 +8,12 @@ public class SongGenerator {
     private Mode mode;
     private Note[] scale;
     private char[] songStructure;
-    private char[] instrumentStructure;
+    private char[] trackStructure;
 
     public Song newSong() {
         Song song = new Song();
         createSongProperties();
-        Track[] tracks = createTracks(songStructure, instrumentStructure);
-        song.setTracks(tracks);
+        song.setTracks(createTracks(songStructure, trackStructure));
         return song;
     }
 
@@ -25,27 +22,32 @@ public class SongGenerator {
         this.mode = Mode.values()[random.nextInt(Mode.values().length)];
         this.scale = createScale(root, mode);
         this.songStructure = randomSongStructure();
-        this.instrumentStructure = randomInstrumentStructure();
+        this.trackStructure = randomtrackStructure();
     }
-
+    // Select a random value from the SongStructure enumerator
     private char[] randomSongStructure() {
         int index = random.nextInt(SongStructure.values().length);
         return SongStructure.values()[index].toString().toCharArray();
     }
-    private char[] randomInstrumentStructure() {
-        int index = random.nextInt(InstrumentStructure.values().length);
-        return InstrumentStructure.values()[index].toString().toCharArray();
+    // Select a random value from the instrument structure enumerator. 
+    // Create a track for each enum value, generate it's contents based on the character.
+    private char[] randomtrackStructure() {
+        int index = random.nextInt(TrackStructure.values().length);
+        return TrackStructure.values()[index].toString().toCharArray();
     }
 
-    private Track[] createTracks(char[] songStructure, char[] instrumentStructure) {
-        Track[] tracks = new Track[instrumentStructure.length];
-
+    private Track[] createTracks(char[] songStructure, char[] trackStructure) {
+        Track[] tracks = new Track[trackStructure.length];
+        // Create a new track for every track in the track structure.
         for (int i = 0; i < tracks.length; i++) {
-            tracks[i] = new Track(instrumentStructure[i]);
+            tracks[i] = new Track(trackStructure[i]);
         }
-
+        // Create a new segment for every segment in the song structure.
         for (int i = 0; i < songStructure.length; i++) {
+            // Create a set of root notes for the segment to revolve around
             int[][] rootNotes = generateRootNotes(3, 4);
+            // For every track, create a segment, which all revolve around the same root notes, 
+            // so that the different instruments are synchronised
             for (int j = 0; j < tracks.length; j++) {
                 Segment segment = createSegment(rootNotes, tracks[j].getType());
                 tracks[j].addSegment(segment);
@@ -53,10 +55,10 @@ public class SongGenerator {
         }
         return tracks;
     }
-
-    private int[][] generateRootNotes(int setsOfBars, int beatsInBars){
+    // The root notes generated will be the root note for the chords on each beat,
+    // and melodies will start from them.
+    private int[][] generateRootNotes(int setsOfBars, int beatsInBars) {
         int[][] rootNotes = new int[setsOfBars][beatsInBars];
-
         for (int i = 0; i < setsOfBars; i++) {
             for (int j = 0; j < beatsInBars; j++) {
                 rootNotes[i][j] = random.nextInt(7);
@@ -64,7 +66,7 @@ public class SongGenerator {
         }
         return rootNotes;
     }
-
+    // Create segment based on the root notes and the type.
     private Segment createSegment(int[][] rootNotes, char type){
         Bar[] bars = new Bar[rootNotes.length];
         for (int i = 0; i < rootNotes.length; i++) {
@@ -72,7 +74,7 @@ public class SongGenerator {
         }
         return new Segment(bars);
     }
-
+    // Using the root notes, and the track type, generate the notes for the section.
     private Bar createBar(int[] rootNotes, char type){
         Beat[] beats = new Beat[rootNotes.length];
         Note[][] notes = null;

@@ -1,11 +1,7 @@
 package web.jelton.musicgen.generator;
-
 import java.util.ArrayList;
 import java.util.List;
-
-/*
- * A track represents an instrument
- */
+// A track represents an instrument
 public class Track {
     // contents of the track
     List<Segment> segments = new ArrayList<Segment>();
@@ -19,6 +15,7 @@ public class Track {
     public void addSegment(Segment segment){
         this.segments.add(segment);
     }
+
     public char getType() {
         return type;
     }

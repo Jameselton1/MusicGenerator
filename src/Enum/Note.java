@@ -1,9 +1,5 @@
 package web.jelton.musicgen.generator.Enum;
-
-
-/*
-* Contains each possible note value according to the chromatic scale
-* */
+// Contains each possible note value according to the chromatic scale
 public enum Note {
     A,
     As,

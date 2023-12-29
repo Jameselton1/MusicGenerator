@@ -1,10 +1,7 @@
 package web.jelton.musicgen.generator;
-
 import java.util.Arrays;
-
 import web.jelton.musicgen.generator.Enum.ChordType;
 import web.jelton.musicgen.generator.Enum.Note;
-
 
 public class Chord {
     // root note of the chord
@@ -16,7 +13,6 @@ public class Chord {
         this.root = scale[root];
         this.notes = generateNotes(root, type, scale);
     }
-
     // retrieve the notes for the chord using the formula and root note like in a scale
     private Note[] generateNotes(int root, ChordType type, Note[] scale) {
         int[] chordFormula = chordFormula(type);
@@ -28,7 +24,6 @@ public class Chord {
         }
         return notes;
     }
-
     // values represent intervals from chord's root note
     private int[] chordFormula(ChordType type) {
         return switch (type) {
@@ -38,6 +33,7 @@ public class Chord {
             default -> null;
         };
     }
+    
     public Note getRoot() {
         return root;
     }

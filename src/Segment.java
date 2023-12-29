@@ -1,5 +1,4 @@
 package web.jelton.musicgen.generator;
-
 import java.util.Arrays;
 
 /*
@@ -7,7 +6,6 @@ import java.util.Arrays;
  * These Segments can be reused to create a longer song with a consistent melody
  * or chord progression
  */
-
 public class Segment {
     private Bar[] bars;
 

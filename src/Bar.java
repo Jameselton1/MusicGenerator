@@ -1,5 +1,4 @@
 package web.jelton.musicgen.generator;
-
 import java.util.Arrays;
 
 /*

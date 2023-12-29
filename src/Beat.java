@@ -1,5 +1,4 @@
 package web.jelton.musicgen.generator;
-
 import web.jelton.musicgen.generator.Enum.Note;
 
 /*
