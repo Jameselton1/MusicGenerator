@@ -9,10 +9,10 @@ public class MidiGenerator {
     private int quarter = ticksInBar / 4;
     private final int MIDI_NOTE_OFFSET = 3;
     // Take the data from a song object and convert it to a midi sequencee
-    public Sequence generateMIDI(Song song) throws InvalidMidiDataException {
+    public Sequence generateMidi(Song song) throws InvalidMidiDataException {
         Sequence sequence = new Sequence(0.0F, quarter);
 
-        // Go through each beat, and create midi events signifying for the notes in the generated song to be played
+        // Loop through the structure of the song and convert it to a MIDI sequence
         int time = 0;
         for (Track track : song.getTracks()) {
             javax.sound.midi.Track t = sequence.createTrack();
