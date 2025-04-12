@@ -11,7 +11,7 @@ For each component in the structure, the subcomponent has a many to one relation
 <img title="MIDI note numbers" src="Media/MidiNoteNumbers.png">
 
 ### Songs
-The song class all of the data relating to the song. It contains an array of Tracks, which themselves contain the song data.
+The song class contains all of the data relating to the song. It contains an array of Tracks, which themselves contain the song data.
 
 ### Tracks
 Tracks represent the [MIDI component](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Track.html) of the same name. Each track is given a track type, which dictates how notes are generated for the track. For example, in a track which represents chords, notes will be generates as spanning over one subdivision, with multiple notes playing together at once in harmony. In contrast, tracks of the melody track type have notes generated with different behaviours, such as having multiple notes over a subdivision, and only ever having one note played at a time.
