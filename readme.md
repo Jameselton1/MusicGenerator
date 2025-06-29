@@ -1,3 +1,6 @@
+> **Note:** A more recent version of this music generator is available, written in C#. While this version is less polished, it lays the groundwork for the updated implementation. Available at https://github.com/Jameselton1/MidiMusicTools.
+
+
 # Music Generator
 The project found in this repository uses music theory and the [Java MIDI library](https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/sound/midi/package-summary.html) to generate music which adheres to scales, and consists of chords, melodies and bass lines. The music is multi instrumental, and because it is in MIDI format it can be imported to digital audio workstations like FL Studio or Logic Pro.
 
